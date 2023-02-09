@@ -1,4 +1,4 @@
-# Golang Server,
+# Golang Server
 
 ```
 Built using Go Gin Framework and Official Mogno Driver 
