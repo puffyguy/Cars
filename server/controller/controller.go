@@ -128,7 +128,11 @@ func GetAllCars(c *gin.Context) {
 		}
 		cars = append(cars, car)
 	}
-	c.JSON(http.StatusOK, gin.H{"message": cars})
+	if len(cars) <= 0 {
+		c.JSON(http.StatusNotFound, gin.H{"message": "No cars available"})
+	} else {
+		c.JSON(http.StatusOK, gin.H{"message": cars})
+	}
 }
 
 func UpdateCar(c *gin.Context) {
@@ -167,8 +171,11 @@ func DeleteCar(c *gin.Context) {
 	filter := bson.M{"name": n}
 	deletedRes, deleteErr := DAO.Collection("carInfo").DeleteOne(context.TODO(), filter)
 	if deleteErr != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"delete error": deleteErr.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": deleteErr.Error()})
 		return
+	}
+	if deletedRes.DeletedCount <= 0 {
+		c.JSON(http.StatusNotFound, gin.H{"delete error": "No car found to delete..."})
 	} else {
 		c.JSON(http.StatusOK, gin.H{"message": deletedRes.DeletedCount})
 	}

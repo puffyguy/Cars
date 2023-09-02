@@ -28,7 +28,8 @@ func main() {
 	router.PUT("/updatecar/:name", controller.UpdateCar)
 	router.DELETE("/deletecar/:name", controller.DeleteCar)
 
-	router.Run(":8000")
+	router.Run("localhost:8000")
+	// log.Println("Server listening at:")
 }
 
 func isAuthenticated(c *gin.Context) {
